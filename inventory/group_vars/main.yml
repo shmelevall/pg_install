@@ -1,0 +1,45 @@
+---
+ansible_ssh_user: alex
+
+postgresql_version: 12
+postgresql_data_checksums: true
+
+#Ubuntu 20.04 fix
+ansible_python_interpreter: "/usr/bin/python3"
+
+# Extensions
+postgresql_ext_install_contrib: yes
+postgresql_ext_install_postgis: yes
+
+# List of databases to be created (optional)
+postgresql_databases: 
+ - name: big_base
+   owner: user_own
+
+   
+    
+
+# List of database extensions to be created (optional)
+postgresql_database_extensions: 
+  - db: big_base
+    extensions:
+     - postgis
+     - pg_stat_statements
+
+postgresql_shared_preload_libraries:
+  - pg_stat_statements
+
+
+# List of users to be created 
+ 
+postgresql_users:
+  - name: user_own
+    pass: pass
+    encrypted: yes  # if password should be encrypted, postgresql >= 10 does only accepts encrypted passwords
+  - name: user_ro
+    pass: pass
+    encrypted: yes  # if password should be encrypted, postgresql >= 10 does only accepts encrypted passwords
+ 
+
+
+

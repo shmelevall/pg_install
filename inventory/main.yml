@@ -1,0 +1,11 @@
+main:
+ children:
+  staging:
+    hosts:
+     stage_db:
+      ansible_host: 178.154.233.244
+  testing:
+   hosts:
+    test_db:
+ #     ansible_host: 178.154.233.244
+  production:

@@ -1,0 +1,30 @@
+- hosts: all
+  serial: 1
+  become: yes
+  vars_files:
+   - vars/custom.yml
+  pre_tasks:
+   - name: Install acl packages 
+     apt: 
+      name: acl 
+      state: present
+   - name: Initialize the user defined variables
+     set_fact:
+        pg_version: 12
+        pg_type: "PG"
+        disable_logging: false
+     
+  roles:
+    - postgresql
+    - setup_replication
+  post_tasks:
+   - name: PostgreSQL | Update the user privileges
+     postgresql_query:
+      query: 'alter role user_ro set default_transaction_read_only=on;'
+      port: "{{postgresql_port}}"
+      login_host: "{{item.host | default(omit)}}"
+      login_user: "{{postgresql_admin_user}}"
+     become: yes
+     become_user: "{{postgresql_admin_user}}"
+     
+     

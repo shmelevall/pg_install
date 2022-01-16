@@ -1,0 +1,22 @@
+---
+# PostgreSQL vars for Ubuntu Bionic (18.04LTS)
+
+# PostGIS
+postgresql_postgis_release_compatibility:
+  9.5: "3.0"
+  9.6: "3.1"
+  10: "3.1"
+  12: "3"
+  13: "3.1"
+
+postgresql_ext_postgis_version: "{{ postgresql_postgis_release_compatibility.get(postgresql_version) }}"
+postgresql_ext_postgis_version_terse: "{{ postgresql_ext_postgis_version | regex_replace('.\\d','') }}"
+
+postgresql_ext_postgis_deps:
+  - libgeos-c1v5
+  - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version_terse}}"
+  - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version_terse}}-scripts"
+
+
+postgresql_fdw_mysql_packages: "postgresql-{{ postgresql_version }}-mysql-fdw"
+postgresql_fdw_ogr_packages: "postgresql-{{ postgresql_version }}-ogr-fdw"
